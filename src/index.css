@@ -1,3 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --green1: #86C8BC;
+  --green2: #CEEDC7;
+  --green3: #3D5656;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +17,38 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--green2);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* COLOURS */
+.header {
+  background-color: var(--green1);
+} 
+
+.product-card, .filter-panel {
+  background-color: white;
+}
+
+.qty-badge, .add-to-cart-btn, .apply-filters-mobile, .qty-control-button button {
+  background-color: var(--green3);
+  color: white;
+}
+
+.search-icon {
+  background-color: var(--green3);
+  filter: invert(71%) sepia(40%) saturate(259%) hue-rotate(119deg) brightness(97%) contrast(90%);
+}
+
+.filter-btn-mobile {
+  filter: invert(31%) sepia(24%) saturate(398%) hue-rotate(131deg) brightness(92%) contrast(94%);
+}
+
+.shopping-cart-link {
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(339deg) brightness(103%) contrast(102%) !important;
+  cursor: pointer;
 }
