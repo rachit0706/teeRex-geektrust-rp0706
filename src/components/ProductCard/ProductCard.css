@@ -2,7 +2,6 @@
     position: relative;
     height: 12rem;
     width: 100%;
-    /* border: 1px solid black; */
     border-radius: 5px;
     margin: auto;
     overflow: hidden;
@@ -22,7 +21,6 @@
 
 .card-details {
     display: flex;
-    /* flex-direction: row; */
     justify-content: space-between;
     align-items: flex-end;
     padding: .2rem .5rem;

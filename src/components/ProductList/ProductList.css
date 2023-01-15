@@ -28,7 +28,6 @@
 
 @media screen and (min-width: 1200px) {
     .product-list {
-        /* flex: 80%; */
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
 }

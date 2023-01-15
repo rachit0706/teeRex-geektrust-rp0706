@@ -13,6 +13,7 @@ export default function CartPage() {
         setTotalBill(calcBill(cartItems));
     }, [totalItems,cartItems,setTotalBill]);
 
+    // FOR CALCULATING TOTAL BILL
     const calcBill = (items) => {
         let total = 0;
         

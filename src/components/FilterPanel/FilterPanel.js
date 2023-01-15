@@ -23,7 +23,7 @@ const filterData = {
     ]
 }
 
-export default function FilterPanel({ showFilters, setShowFilters, setFilters, screenWidth, filters, clearFilters, areFiltersEmpty }) {
+export default function FilterPanel({ showFilters, setShowFilters, setFilters,  filters, clearFilters, areFiltersEmpty }) {
     const { color, gender, price, type } = filters;
 
     const handleFilters = (prop, value) => {

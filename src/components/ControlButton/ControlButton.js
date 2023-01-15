@@ -35,6 +35,7 @@ export default function ControlButton( {available, id}){
                 return newIds;
             });
             setTotalItems(prev => prev - 1);
+            // Deleting the cart item itself when user decreasing qty below 1
             setCartItems(prev => {
                 const newCart = new Map(prev);
                 newCart.delete(id);

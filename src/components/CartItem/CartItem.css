@@ -10,6 +10,7 @@
     margin-bottom: 1.2rem;
 }
 
+/* Cart Item Image */
 .cart-item-img {
     height: 65%;
     width: 100%;
@@ -22,6 +23,7 @@
     object-fit: cover;
 }
 
+/* Cart Item Details */
 .cart-item-details {
     width: 100%;
     padding: .5rem 1rem;
@@ -40,6 +42,7 @@ h4 {
     align-items: flex-end;
 }
 
+/* Additional Details for bigger screens */
 .additional-details {
     display: none;
 }

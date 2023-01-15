@@ -95,6 +95,7 @@ export default function HomePage() {
         setProducts(fixedData);
     }
 
+    // Checking if filters are not applied
     const areFiltersEmpty = () => {
         const { color, gender, price, type } = filters;
 
@@ -109,7 +110,7 @@ export default function HomePage() {
                 <SearchBar displayFilters={setShowFilters} setSearchQuery={setSearchQuery} areFiltersEmpty={areFiltersEmpty} />
             </div>
             <div className="products-n-filters">
-                {(screenWidth < 600 ? showFilters : true) ? <FilterPanel showFilters={showFilters} filters={filters} setShowFilters={setShowFilters} setFilters={setFilters} screenWidth={screenWidth} clearFilters={clearFilters} areFiltersEmpty={areFiltersEmpty} /> : null}
+                {(screenWidth < 600 ? showFilters : true) ? <FilterPanel showFilters={showFilters} filters={filters} setShowFilters={setShowFilters} setFilters={setFilters} clearFilters={clearFilters} areFiltersEmpty={areFiltersEmpty} /> : null}
                 <ProductList products={filteredProducts} />
             </div>
             <Footer />
