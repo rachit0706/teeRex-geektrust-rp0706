@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./FilterPanel.css";
 
 const filterData = {
@@ -23,7 +23,8 @@ const filterData = {
     ]
 }
 
-export default function FilterPanel({ showFilters, setShowFilters, setFilters, screenWidth }) {
+export default function FilterPanel({ showFilters, setShowFilters, setFilters, screenWidth, filters, clearFilters, areFiltersEmpty }) {
+    const { color, gender, price, type } = filters;
 
     const handleFilters = (prop, value) => {
         setFilters(prev => {
@@ -44,63 +45,68 @@ export default function FilterPanel({ showFilters, setShowFilters, setFilters, s
 
     return (
         <div className="filter-panel">
-            <div>
-                <h4>Colour</h4>
-                <ul className="filters">
-                    {filterData.colours.map(colour => (
-                        <li key={colour.name}>
-                            <label >
-                                <input type="checkbox" onChange={() => handleFilters('color', colour.name)} />
-                                {colour.label}
-                            </label>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div>
-                <h4>Gender</h4>
-                <ul className="filters">
-                    {filterData.genders.map(gender => (
-                        <li key={gender.name}>
-                            <label >
-                                <input type="checkbox" onChange={() => handleFilters('gender', gender.name)} />
-                                {gender.label}
-                            </label>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div>
-                <h4>Price</h4>
-                <ul className="filters">
-                    {filterData.prices.map(price => (
-                        <li key={price.name}>
-                            <label>
-                                <input type="checkbox" onChange={() => handleFilters('price', price.name)} />
-                                {price.label}
-                            </label>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div>
-                <h4>Type</h4>
-                <ul className="filters">
-                    {filterData.types.map(type => (
-                        <li key={type.name}>
-                            <label>
-                                <input type="checkbox" onChange={() => handleFilters('type', type.name)} />
-                                {type.label}
-                            </label>
-                        </li>
-                    ))}
-                </ul>
+            <div className="filters-grid">
+                <div>
+                    <h4>Colour</h4>
+                    <ul className="filters">
+                        {filterData.colours.map(obj => (
+                            <li key={obj.name}>
+                                <label >
+                                    <input type="checkbox" checked={color.has(obj.name)} onChange={() => handleFilters('color', obj.name)} />
+                                    {obj.label}
+                                </label>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div>
+                    <h4>Gender</h4>
+                    <ul className="filters">
+                        {filterData.genders.map(obj => (
+                            <li key={obj.name}>
+                                <label >
+                                    <input type="checkbox" checked={gender.has(obj.name)} onChange={() => handleFilters('gender', obj.name)} />
+                                    {obj.label}
+                                </label>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div>
+                    <h4>Price</h4>
+                    <ul className="filters">
+                        {filterData.prices.map(obj => (
+                            <li key={obj.name}>
+                                <label>
+                                    <input type="checkbox" checked={price.has(obj.name)} onChange={() => handleFilters('price', obj.name)} />
+                                    {obj.label}
+                                </label>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div>
+                    <h4>Type</h4>
+                    <ul className="filters">
+                        {filterData.types.map(obj => (
+                            <li key={obj.name}>
+                                <label>
+                                    <input type="checkbox" checked={type.has(obj.name)} onChange={() => handleFilters('type', obj.name)} />
+                                    {obj.label}
+                                </label>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
             {showFilters ? (
-                <>
-                    <button className="apply-filters-mobile">Apply</button>
-                    <button className="cancel-filters-mobile" onClick={() => setShowFilters(false)}>Cancel</button>
-                </>
+                <div className="mobile-menu-btns">
+                    {!areFiltersEmpty() ? (<button className="clear-filters-mobile-btn" onClick={() => {
+                        clearFilters();
+                        setShowFilters(false);
+                    }}>Clear Filters</button>): null}
+                    <button className="close-filter-menu" onClick={() => setShowFilters(false)}>Close</button>
+                </div>
             ) : null}
         </div>
     );

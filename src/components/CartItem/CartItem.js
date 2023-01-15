@@ -1,4 +1,5 @@
 import React from "react";
+import { useCartContext } from "../CartContext";
 import ControlButton from "../ControlButton/ControlButton";
 import "./CartItem.css"
 
@@ -19,6 +20,25 @@ EXAMPLE DATA = {
 
 export default function CartItem({ details }) {
     const {imageURL, name, price, selectedQty, quantity, id, gender, color, type } = details;
+    const {setIdsInCart, setTotalItems, setCartItems} = useCartContext();
+
+    const handleDeleteItem = () => {
+        // const toDelete = cartItems.get(id);
+
+        setTotalItems(prev => prev - selectedQty);
+        setIdsInCart(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(id);
+
+            return newSet;
+        })
+        setCartItems(prev => {
+            const newMap = new Map(prev);
+            newMap.delete(id);
+
+            return newMap;
+        });
+    }
 
     return (
         <div className="cart-item">
@@ -31,8 +51,8 @@ export default function CartItem({ details }) {
                     <span>&#8377;{price}</span>
                 </div>
                 <div className="detail-row">
-                    <span>Quantity: {selectedQty}</span>
                     <ControlButton available={quantity} id={id} />
+                    <button className="remove-item" onClick={handleDeleteItem}>Remove Item</button>
                 </div>
                 <div className="additional-details">
                     <ul>

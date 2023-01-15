@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useCartContext } from "../CartContext";
 import "./ProductCard.css";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';

@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { useCartContext } from "../CartContext";
 import "./ControlButton.css";
 
 export default function ControlButton( {available, id}){
-    const {setIdsInCart, setTotalItems, setCartItems} = useCartContext();
-    const [qty, setQty] = useState(1);
+    const {setIdsInCart, setTotalItems, cartItems, setCartItems} = useCartContext();
 
     const handleIncrease = () => {
-        if(qty === available) {
+        const currQty = cartItems.get(id).selectedQty;
+
+        if(currQty === available) {
             alert(`Sorry! you can't order more than ${available} quantities of this product`);
             return;
         }
 
-        setQty(prev => prev + 1);
         setTotalItems(prev => prev + 1);
         setCartItems(prev => {
             const newCart = new Map(prev);
@@ -25,26 +25,26 @@ export default function ControlButton( {available, id}){
     };
 
     const handleDecrease = () => {
-        if(qty === 1) {
+        const currQty = cartItems.get(id).selectedQty; 
+
+        if(currQty === 1) {
             setIdsInCart(prev => {
                 const newIds = new Set(prev);
                 newIds.delete(id);
 
                 return newIds;
-            })
+            });
             setTotalItems(prev => prev - 1);
             setCartItems(prev => {
                 const newCart = new Map(prev);
                 newCart.delete(id);
     
                 return newCart;
-            })
-            
+            });
 
             return;
         }
 
-        setQty(prev => prev - 1);
         setTotalItems(prev => prev - 1);
         setCartItems(prev => {
             const newCart = new Map(prev);
@@ -59,7 +59,7 @@ export default function ControlButton( {available, id}){
     return (
         <div className="qty-control-button">
             <button onClick={handleDecrease}>-</button>
-            <span>{qty}</span>
+            <span>{cartItems.get(id) ? cartItems.get(id).selectedQty : 1}</span>
             <button onClick={handleIncrease}>+</button>
         </div>
     );

@@ -11,7 +11,7 @@
 }
 
 .cart-item-img {
-    height: 70%;
+    height: 65%;
     width: 100%;
     overflow: hidden;
 }
@@ -27,7 +27,7 @@
     padding: .5rem 1rem;
     display: flex;
     flex-direction: column;
-    gap: .2rem;
+    gap: .3rem;
 }
 
 h4 {
@@ -42,6 +42,15 @@ h4 {
 
 .additional-details {
     display: none;
+}
+
+.remove-item {
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: red;
+    height: 1.5rem;
+    padding: 0 5px;
 }
 
 @media screen and (min-width: 600px) {

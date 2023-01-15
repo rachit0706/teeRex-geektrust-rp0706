@@ -6,16 +6,16 @@ import FilterPanel from "../FilterPanel/FilterPanel";
 import Header from "../Header/Header";
 import SearchIcon from '@mui/icons-material/Search';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { FlashAuto } from "@mui/icons-material";
 import { useWindowWidth } from "../customHooks";
+import { applyFilters } from "../helpers";
+import Footer from "../Footer/Footer";
 
 const API = "https://geektrust.s3.ap-southeast-1.amazonaws.com/coding-problems/shopping-cart/catalogue.json";
 
-const SearchBar = ({displayFilters, setSearchQuery}) => {
+const SearchBar = ({ displayFilters, setSearchQuery, areFiltersEmpty }) => {
 
     const handleSearch = (e) => {
         const value = e.target.value;
-
         setSearchQuery(value);
     }
 
@@ -23,25 +23,29 @@ const SearchBar = ({displayFilters, setSearchQuery}) => {
         <div className="search-bar">
             <input type="text" placeholder="Search by name, colour or type" onChange={(e) => handleSearch(e)} />
             <SearchIcon className="icon search-icon" />
-            <FilterAltIcon className="icon filter-btn-mobile" onClick={() => displayFilters(prev => !prev)} />
+            <div className="mobile-filter-container">
+                {!areFiltersEmpty() ? <div className="filter-active"></div> : null}
+                <FilterAltIcon className="icon filter-btn-mobile" onClick={() => displayFilters(prev => !prev)} />
+            </div>
         </div>
     );
 }
 
 export default function HomePage() {
-    /* STATES */
-    const screenWidth = useWindowWidth();
-    const [products, setProducts] = useState([]);
-    const [showFilters, setShowFilters] = useState(false);
-    const [filteredProducts, setFilteredProducts] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [filters, setFilters] = useState({
+    const defaultFilters = {
         color: new Set(),
         gender: new Set(),
         price: new Set(),
         type: new Set()
-    });
-    
+    }
+    /* STATES */
+    const screenWidth = useWindowWidth();
+    const [fixedData, setFixedData] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [showFilters, setShowFilters] = useState(false);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filters, setFilters] = useState(defaultFilters);
 
     useEffect(() => {
         fetchProducts(API);
@@ -52,21 +56,20 @@ export default function HomePage() {
             const response = await axios.get(url);
             setProducts(response.data);
             setFilteredProducts(response.data);
-        }catch (e) {
+            setFixedData(response.data);
+        } catch (e) {
             alert(e);
         }
     }
 
     // SEARCH FUNCTIONALITY
     useEffect(() => {
-        if(searchQuery === "") {
+        if (searchQuery === "") {
             setFilteredProducts(products);
-        }else {
+        } else {
             const value = searchQuery;
             let filtered = products.filter(product => {
-                const { name, color, type} = product;
-
-
+                const { name, color, type } = product;
                 return name.toLowerCase().includes(value) || color.toLowerCase().includes(value) || type.toLowerCase().includes(value);
             });
 
@@ -74,22 +77,42 @@ export default function HomePage() {
         }
     }, [searchQuery, products])
 
+    // FILTER APPLICATION
     useEffect(() => {
+        let currProducts = [...fixedData];
 
-    })
+        if (currProducts.length) {
+            let filtered = applyFilters(currProducts, filters);
 
-    const applyFilters = (data) => {
-        
-    };
+            setProducts(filtered);
+        }
+
+    }, [filters, fixedData])
+
+
+    const clearFilters = () => {
+        setFilters(defaultFilters);
+        setProducts(fixedData);
+    }
+
+    const areFiltersEmpty = () => {
+        const { color, gender, price, type } = filters;
+
+        return !color.size && !gender.size && !price.size && !type.size;
+    }
 
     return (
-        <div className="home-page">
+        <>
             <Header />
-            <SearchBar displayFilters={setShowFilters} setSearchQuery={setSearchQuery} />
+            <div className="search-bar-area">
+                {!areFiltersEmpty() ? <button className="clear-filters-btn" onClick={clearFilters}>Clear Filters</button> : null}
+                <SearchBar displayFilters={setShowFilters} setSearchQuery={setSearchQuery} areFiltersEmpty={areFiltersEmpty} />
+            </div>
             <div className="products-n-filters">
-                {(screenWidth < 600 ? showFilters : true) ? <FilterPanel showFilters={showFilters} setShowFilters={setShowFilters} setFilters={setFilters} screenWidth={screenWidth} /> : null}
+                {(screenWidth < 600 ? showFilters : true) ? <FilterPanel showFilters={showFilters} filters={filters} setShowFilters={setShowFilters} setFilters={setFilters} screenWidth={screenWidth} clearFilters={clearFilters} areFiltersEmpty={areFiltersEmpty} /> : null}
                 <ProductList products={filteredProducts} />
             </div>
-        </div>
+            <Footer />
+        </>
     );
 }

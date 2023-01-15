@@ -34,7 +34,7 @@ code {
   background-color: white;
 }
 
-.qty-badge, .add-to-cart-btn, .apply-filters-mobile, .qty-control-button button {
+.qty-badge, .add-to-cart-btn, .apply-filters-mobile, .qty-control-button button, .clear-filters-mobile-btn, .clear-filters-btn {
   background-color: var(--green3);
   color: white;
 }
